@@ -98,11 +98,76 @@ AND A.DTA_FIM_EXTR = TO_DATE ('30/06/20','DD-MM-YY')
 AND REGEXP_LIKE (A.DCR_PLANO,'PSAP/Eletropaulo')
 
 
+--
+--
+-- TABELA CORRETA PRA PEGAR O PLANO(INFORMACAO DO RAIR)  
+--  ADESAO PLANO PARTIC_FSS 
 
 
 
 
+--TRUNCATE Table own_funcesp.PRE_TBL_TempExtrat_ctb
+--select COUNT(*) from own_funcesp.PRE_TBL_TempExtrat_ctb
 
+/*
+   esse mesmo select em desenvolvimento não traz nada em homo tras, atualizar a proc e subir 
+   em new, tratar o parametro de data da entrada, implementar a logica...
+*/
+
+SELECT p.num_matr_partf,  p.num_rgtro_emprg,  NVL((A.VLR_SDANT_SDCTPR + A.VLR_ENTMES_SDCTPR - A.VLR_SAIMES_SDCTPR),0) AS VLR_RES1, b.num_plbnf , p.cod_emprs
+FROM SLD_CONTA_PARTIC_FSS A
+  ,ATT.PARTICIPANTE_FSS P
+  ,att.adesao_plano_partic_fss b
+  ,ATT.CONTA_FSS        C
+WHERE  1=1
+AND A.NUM_MATR_PARTF  = P.NUM_MATR_PARTF
+AND A.NUM_CTFSS       = C.NUM_CTFSS
+and p.num_matr_partf  = b.num_matr_partf
+and b.num_plbnf in (19)
+-- AND A.NUM_MATR_PARTF  = B.NUM_MATR
+AND A.NUM_CTFSS       = 976
+AND A.COD_UM          = 248
+AND P.COD_EMPRS       IN (40,60)
+and A.VLR_SDANT_SDCTPR + A.VLR_ENTMES_SDCTPR - A.VLR_SAIMES_SDCTPR <> 0
+
+
+--SELECT MAX(DAT_CDIAUM)
+SELECT max(DAT_CDIAUM)AS DAT_CDIAUM, VLR_CDIAUM
+--SELECT * 
+FROM COTACAO_DIA_UM
+WHERE COD_UM = 248 --A.COD_UM
+--AND DAT_CDIAUM = TO_DATE('30/06/2020','DD/MM/YYYY') nao devo fazer isso, tenho q pegar a maior cotacao no momento da consulta
+GROUP BY VLR_CDIAUM
+
+-- isso esta certo, implementar no proc em dev e subir para homo
+DECLARE
+
+ 
+
+     VDATA_FIM DATE;
+     VALOR NUMERIC;
+      
+ 
+
+BEGIN 
+      SELECT MAX(FP.DTA_FIM_EXTR)INTO VDATA_FIM FROM ATT.FC_PRE_TBL_BASE_EXTRAT_CTB FP WHERE FP.COD_EMPRS = 40 AND UPPER(FP.DCR_PLANO) = 'PSAP/ELETROPAULO';
+     -- SELECT VDATA_FIM
+     
+     
+     SELECT NVL(MAX(A.VLR_CDIAUM),0)  INTO VALOR
+                                  FROM COTACAO_DIA_UM A
+                                  WHERE A.COD_UM = 248
+                                   AND A.DAT_CDIAUM = (SELECT MAX(DAT_CDIAUM)
+                                                        FROM COTACAO_DIA_UM
+                                                         WHERE COD_UM = A.COD_UM
+                                                         --AND DAT_CDIAUM = TO_DATE('2020-06-30  00:00:00','YYYY-MM-DD  HH24:MI:SS')
+                                                         
+                                                       );
+     
+     
+     DBMS_OUTPUT.PUT_LINE(VDATA_FIM); 
+     DBMS_OUTPUT.PUT_LINE(VALOR); 
+END;
 
 
 
