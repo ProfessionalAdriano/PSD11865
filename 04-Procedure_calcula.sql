@@ -120,9 +120,9 @@ BEGIN
                                                                   AND D.NUM_MATR_PARTF = A.NUM_MATR_PARTF
                                                                   AND D.NUM_CTFSS      = A.NUM_CTFSS
                                                                   AND D.COD_UM         = A.COD_UM
-                                                                  --- Maior dta da publicacao do extrato:
-                                                                  AND D.ANOMES_MOVIM_SDCTPR = ANY (TO_NUMBER(TO_CHAR(TRUNC(VDATA_FIM,'YYYYMM'))), TO_NUMBER(TO_CHAR(TRUNC(DTA_MOV,'YYYYMM'))))
-                                                                    
+                                                                  --- Prioridade, parametro date informado, ou maior dta da publicacao do extrato:
+                                                                  AND D.ANOMES_MOVIM_SDCTPR = ANY (TO_NUMBER(TO_CHAR(TRUNC(DTA_MOV,'YYYYMM'))), TO_NUMBER(TO_CHAR(TRUNC(VDATA_FIM,'YYYYMM'))))
+                                                                                                                                         
 
                                                               )
 
@@ -135,8 +135,8 @@ BEGIN
                                   WHERE A.COD_UM = 248
                                    AND A.DAT_CDIAUM = (SELECT MAX(DAT_CDIAUM)
                                                         FROM COTACAO_DIA_UM
-                                                         WHERE COD_UM = A.COD_UM
-                                                         --AND DAT_CDIAUM = TO_DATE(VDATA_FIM,'DD/MM/YYYY')
+                                                         WHERE COD_UM = A.COD_UM                                                         
+                                                         AND DAT_CDIAUM = ANY (TO_DATE(TRUNC(DTA_MOV)), TO_DATE(TRUNC(VDATA_FIM)))
                                                        )
                                )
 
@@ -166,5 +166,4 @@ BEGIN
 
     END;
 END;
-
 
