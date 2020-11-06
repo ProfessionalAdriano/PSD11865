@@ -104,16 +104,29 @@ BEGIN
 
                  B.VLR_RES1 = (SELECT NVL(SUM(A.VLR_SDANT_SDCTPR + A.VLR_ENTMES_SDCTPR - A.VLR_SAIMES_SDCTPR),0) AS VLR_RES1
                                  FROM SLD_CONTA_PARTIC_FSS A
-                                      ,ATT.PARTICIPANTE_FSS P
-                                      ,ATT.CONTA_FSS        C
-                                  WHERE  1=1
-                                   AND A.NUM_MATR_PARTF  = P.NUM_MATR_PARTF
-                                   AND A.NUM_CTFSS       = C.NUM_CTFSS
-                                   AND A.NUM_MATR_PARTF  = B.NUM_MATR
-                                   AND A.NUM_CTFSS       = 976
-                                   AND A.COD_UM          = 248
-                                   AND P.COD_EMPRS       IN (40,60)
-                                   AND C.NUM_PLBNF_CTFSS = COD_PLANO -- 19
+                                     ,ATT.PARTICIPANTE_FSS P
+                                     ,ATT.CONTA_FSS        C
+                                 WHERE  1=1
+                                  AND A.NUM_MATR_PARTF  = P.NUM_MATR_PARTF
+                                  AND A.NUM_CTFSS       = C.NUM_CTFSS
+                                  AND A.NUM_MATR_PARTF  = B.NUM_MATR
+                                  AND A.NUM_CTFSS       = 976
+                                  AND A.COD_UM          = 248
+                                  AND P.COD_EMPRS       IN (40,60)
+                                  AND C.NUM_PLBNF_CTFSS = 19 --COD_PLANO
+                                  AND A.ANOMES_MOVIM_SDCTPR = (SELECT MAX(D.ANOMES_MOVIM_SDCTPR)
+                                                                 FROM SLD_CONTA_PARTIC_FSS D
+                                                                 WHERE 1=1
+                                                                  AND D.NUM_MATR_PARTF = A.NUM_MATR_PARTF
+                                                                  AND D.NUM_CTFSS      = A.NUM_CTFSS
+                                                                  AND D.COD_UM         = A.COD_UM
+                                                                  --- Maior dta da publicacao do extrato:
+                                                                  AND D.ANOMES_MOVIM_SDCTPR = ANY (TO_NUMBER(TO_CHAR(TRUNC(VDATA_FIM,'YYYYMM'))), TO_NUMBER(TO_CHAR(TRUNC(DTA_MOV,'YYYYMM'))))
+                                                                    
+
+                                                              )
+
+
                                ),
 
 
@@ -123,7 +136,7 @@ BEGIN
                                    AND A.DAT_CDIAUM = (SELECT MAX(DAT_CDIAUM)
                                                         FROM COTACAO_DIA_UM
                                                          WHERE COD_UM = A.COD_UM
-                                                         AND DAT_CDIAUM = TO_DATE(VDATA_FIM,'DD/MM/YYYY')
+                                                         --AND DAT_CDIAUM = TO_DATE(VDATA_FIM,'DD/MM/YYYY')
                                                        )
                                )
 
@@ -144,7 +157,7 @@ BEGIN
           COMMIT;
 
       END IF;
-      
+
       -- ELIMINA OS REGISTRO QUE PERTENCEM AO PLANO 19 COM A DESCRICAO --> (Plano CD 2 Eletropaulo/Plano CD Eletropaulo)
       DELETE FROM OWN_FUNCESP.PRE_TBL_TEMPEXTRAT_CTB PT WHERE REGEXP_LIKE (PT.DCR_PLANO,'(Plano CD 2 Eletropaulo|Plano CD Eletropaulo)');
       COMMIT;
