@@ -210,6 +210,14 @@ Posteriormente, executar o script 06-Execute
 OWN_FUNCESP.PRE_PRC_EXTRATOCALCULA;
 
 
+BEGIN
+OWN_FUNCESP.PRE_PRC_EXTRATOCALCULA(40,'psap/eletropaulo',NULL);
+OWN_FUNCESP.PRE_PRC_EXTRATOATUALIZA;
+END;
+
+
+
+
 
 Recompilar os objetos abaixo no ambiente de Homologação, NEWTST.
 04-Procedure_calcula
@@ -219,10 +227,50 @@ Diretório:
 J:\Change_Request\Desenvolvimento\Amadeus\Capitalizacao\GMUD-4050_20200716_Desenv_Leandro_Proc\Prod
 
 Posteriormente, executar o script 06-Execute
+---------------------------------------------
+---------------------------------------------
+-- Novo teste, apenas Truncate na tabela --> OWN_FUNCESP.PRE_TBL_TEMPEXTRAT_CTB
+														 
+Prezados, boa tarde!
+
+Por favor, executar o Script abaixo em NewTst:
+
+Diretório:
+J:\Change_Request\Desenvolvimento\Amadeus\Capitalizacao\GMUD-4050_20200716_Desenv_Leandro_Proc\Prod
+
+-- Apenas este arquivo:
+08-DDL_TRUNCATE
+
+-- Aguardando execução de sub-tarefa...
+-- Executado pelo Edson DBA...
 
 
 
-Primeira coisa, dar carga na tabela oficial via charger, e depois abrir chamado para aplicar as correções acima...
+Executar o objeto abaixo no ambiente de Homologação, NEWTST.
+04-Procedure_calcula
+
+Diretório:
+J:\Change_Request\Desenvolvimento\Amadeus\Capitalizacao\GMUD-4050_20200716_Desenv_Leandro_Proc\Prod
+-- J:\Change_Request\Implantacao\Amadeus\Capitalizacao\2020\GMUD-4050_20200716_Desenv_Leandro_Proc\Prod (Implantacao Logs)
+
+Posteriormente, executar o script 06-Execute
+
+-- Criar uma Sub-Task em homologação 
+
+
+-- 08-DDL_TRUNCATE --> Se estiver executando este pode ser o problema....(Aguardar o DBA verificar)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
