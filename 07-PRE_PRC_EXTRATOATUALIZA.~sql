@@ -1,0 +1,102 @@
+SET ECHO ON
+SET TIME ON
+SET TIMING ON
+SET SQLBL ON
+SET SERVEROUTPUT ON SIZE 1000000
+SHOW USER
+SELECT * FROM GLOBAL_NAME;
+SELECT INSTANCE_NAME, HOST_NAME FROM V$INSTANCE;
+SELECT TO_CHAR(SYSDATE,'DD/MM/YYYY HH24:MI:SS') DATA FROM DUAL;
+
+
+CREATE OR REPLACE PROCEDURE OWN_FUNCESP.PRE_PRC_EXTRATOATUALIZA
+IS
+
+BEGIN
+
+     DECLARE
+      COD_EMPRESA     NUMBER(3);
+      NUM_REGISTRO    VARCHAR2(12);
+      DTA_FIM         DATE;
+      DCR_PLANO       VARCHAR2(40);
+      COD_PLANO       NUMBER;
+      DQ              NUMBER(13, 2);
+      DR              NUMBER(13, 2);
+      DU              NUMBER(13, 2);
+      DV              NUMBER(13, 2);
+      EI              NUMBER(13, 2);
+      EG              NUMBER(13, 2);
+      RES1            NUMBER(13, 2);
+      RES3            NUMBER(13, 2);
+      RES4            NUMBER(13, 2);
+
+    CURSOR CURSOREXTRATO IS
+      SELECT COD_EMPRESA
+            ,NUM_REGISTRO
+            ,DTA_FIM
+            ,DCR_PLANO
+            ,COD_PLANO
+            ,VLR_DQ
+            ,VLR_DR
+            ,VLR_DU
+            ,VLR_DV
+            ,VLR_EI
+            ,VLR_EG
+            ,VLR_RES1
+            ,VLR_RES3
+            ,VLR_RES4
+      FROM OWN_FUNCESP.PRE_TBL_TEMPEXTRAT_CTB
+      ORDER BY COD_EMPRESA,NUM_REGISTRO;
+
+    BEGIN
+
+      OPEN CURSOREXTRATO;
+      LOOP
+
+        FETCH CURSOREXTRATO
+          INTO COD_EMPRESA
+              ,NUM_REGISTRO
+              ,DTA_FIM
+              ,DCR_PLANO
+              ,COD_PLANO
+              ,DQ
+              ,DR
+              ,DU
+              ,DV
+              ,EI
+              ,EG
+              ,RES1
+              ,RES3
+              ,RES4;
+        EXIT WHEN CURSOREXTRATO%NOTFOUND;
+
+        UPDATE ATT.FC_PRE_TBL_BASE_EXTRAT_CTB A
+           SET A.VLR_BENEF_BD_PROP   = DQ,
+               A.VLR_BENEF_BD_INTE   = DV, -- DR,
+               A.RENDA_ESTIM_PROP    = DU,
+               A.RENDA_ESTIM_INT     = DV,
+               A.VLR_CTB_INT_BD      = EI,
+               A.VLR_CTB_PROP_BD     = EG,
+               A.VLR_SLD_ADICIONAL   = RES1, -- RES3
+               A.VLR_BENEF_ADICIONAL = RES3  -- RES4
+         WHERE A.COD_EMPRS = COD_EMPRESA
+           AND A.NUM_RGTRO_EMPRG = NUM_REGISTRO
+           AND A.DTA_FIM_EXTR = DTA_FIM
+           AND A.DCR_PLANO = DCR_PLANO;
+      END LOOP;
+
+      CLOSE CURSOREXTRATO;
+      DBMS_OUTPUT.PUT_LINE('FINAL' );
+
+    END;
+
+
+END;
+
+
+
+
+
+
+
+
