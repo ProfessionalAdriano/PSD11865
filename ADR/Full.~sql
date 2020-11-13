@@ -1,0 +1,24 @@
+PROJ-760
+PSD-11865 | RS | Ajustes no extrato previdenciário para atender o saldamento PSAP
+-- EM ANDAMENTO
+
+
+
+--Usuário Luiz Carlos 
+
+ * Ao efetuar a homologação, informou inconsistência...
+
+-- Pegar o objeto neste diretório:
+J:\Change_Request\Desenvolvimento\Amadeus\Capitalizacao\GMUD-5431_20201001_Desenv_Leandro_Proc
+
+
+
+-- PSD-23824 - Aguardando execucao dos objetos abaixo para teste:
+/*
+Prezados, Boa Tarde!
+Por gentileza executar o script 06-Execute.sql, no ambiente de Homologação, NEWTST.
+J:\Change_Request\Desenvolvimento\Amadeus\Capitalizacao\GMUD-4050_20200716_Desenv_Leandro_Proc\Prod
+*/
+
+
+

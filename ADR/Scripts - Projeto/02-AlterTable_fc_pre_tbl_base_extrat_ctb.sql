@@ -1,0 +1,15 @@
+SET ECHO ON
+SET TIME ON
+SET TIMING ON
+SET SQLBL ON
+SET SERVEROUTPUT ON SIZE 1000000
+SHOW USER
+SELECT * FROM GLOBAL_NAME;
+SELECT INSTANCE_NAME, HOST_NAME FROM V$INSTANCE;
+SELECT TO_CHAR(SYSDATE,'DD/MM/YYYY HH24:MI:SS') DATA FROM DUAL;
+
+
+--Criação de 2 colunas na tabela att.fc_pre_tbl_base_extrat_ctb
+
+alter table att.fc_pre_tbl_base_extrat_ctb add VLR_SLD_ADICIONAL NUMBER(13,2);
+alter table att.fc_pre_tbl_base_extrat_ctb add VLR_BENEF_ADICIONAL NUMBER(13,2);
