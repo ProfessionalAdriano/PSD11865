@@ -126,7 +126,7 @@ BEGIN
                                      AND SCPF.NUM_CTFSS  = 976
                                      AND SCPF.COD_UM     = 248
                                      AND PF.COD_EMPRS  IN (40,60)
-                                     AND SCPF.ANOMES_MOVIM_SDCTPR <= TO_NUMBER(TRUNC(TO_CHAR(P_DTA_MOV,'YYYYMM')))
+                                     AND SCPF.ANOMES_MOVIM_SDCTPR = TO_NUMBER(TRUNC(TO_CHAR(P_DTA_MOV,'YYYYMM')))
 
                                  ),
 
@@ -269,7 +269,7 @@ BEGIN
                                      AND SCPF.NUM_CTFSS  = 976
                                      AND SCPF.COD_UM     = 248
                                      AND PF.COD_EMPRS  IN (40,60)
-                                     AND SCPF.ANOMES_MOVIM_SDCTPR <= TO_NUMBER(TRUNC(TO_CHAR(L_DT_FIM,'YYYYMM')))
+                                     AND SCPF.ANOMES_MOVIM_SDCTPR = TO_NUMBER(TRUNC(TO_CHAR(L_DT_FIM,'YYYYMM')))-- Tem q ser = do contrario alterar o saldo
 
                                  ),
 
