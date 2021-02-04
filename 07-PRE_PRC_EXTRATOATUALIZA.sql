@@ -1,3 +1,13 @@
+SET ECHO ON
+SET TIME ON
+SET TIMING ON
+SET SQLBL ON
+SET SERVEROUTPUT ON SIZE 1000000
+SHOW USER
+SELECT * FROM GLOBAL_NAME;
+SELECT INSTANCE_NAME, HOST_NAME FROM V$INSTANCE;
+SELECT TO_CHAR(SYSDATE,'DD/MM/YYYY HH24:MI:SS') DATA FROM DUAL;
+
 CREATE OR REPLACE Procedure OWN_FUNCESP.Pre_Prc_Extratoatualiza
 IS
 
@@ -61,17 +71,17 @@ BEGIN
 
         UPDATE att.fc_pre_tbl_base_extrat_ctb a
            SET a.VLR_BENEF_BD_PROP   = DQ,
-               a.VLR_BENEF_BD_INTE   = DR,
+               a.VLR_BENEF_BD_INTE   = DV, -- DR,
                a.RENDA_ESTIM_PROP    = DU,
                a.RENDA_ESTIM_INT     = DV,
                a.VLR_CTB_INT_BD      = EI,
                a.VLR_CTB_PROP_BD     = EG,
-               a.VLR_SLD_ADICIONAL   = RES3, --  RES1
-               a.VLR_BENEF_ADICIONAL = RES4  --  RES3 
-         WHERE a.cod_emprs = COD_EMPRESA
+               a.VLR_SLD_ADICIONAL   = RES3, -- RES1
+               a.VLR_BENEF_ADICIONAL = RES4  -- RES3
+         WHERE a.cod_emprs       = COD_EMPRESA
            and a.num_rgtro_emprg = NUM_REGISTRO
-           and a.dta_fim_extr = DTA_FIM
-           and a.DCR_PLANO = DCR_PLANO;
+           and a.dta_fim_extr    = DTA_FIM
+           and a.DCR_PLANO       = DCR_PLANO;
       END LOOP;
 
       CLOSE CursorExtrato;
